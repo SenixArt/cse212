@@ -1,5 +1,3 @@
-namespace week03;
-
 public class Maze
 {
     private readonly Dictionary<(int, int), bool[]> _mazeMap;
@@ -11,9 +9,6 @@ public class Maze
         _mazeMap = mazeMap;
     }
 
-    /// <summary>
-    /// Problem 4: Move Left
-    /// </summary>
     public void MoveLeft()
     {
         if (_mazeMap.TryGetValue((_currX, _currY), out var status) && status[0])
@@ -22,13 +17,10 @@ public class Maze
         }
         else
         {
-            Console.WriteLine("Can't go that way!");
+            throw new InvalidOperationException("Can't go that way!");
         }
     }
 
-    /// <summary>
-    /// Problem 4: Move Right
-    /// </summary>
     public void MoveRight()
     {
         if (_mazeMap.TryGetValue((_currX, _currY), out var status) && status[1])
@@ -37,13 +29,10 @@ public class Maze
         }
         else
         {
-            Console.WriteLine("Can't go that way!");
+            throw new InvalidOperationException("Can't go that way!");
         }
     }
 
-    /// <summary>
-    /// Problem 4: Move Up
-    /// </summary>
     public void MoveUp()
     {
         if (_mazeMap.TryGetValue((_currX, _currY), out var status) && status[2])
@@ -52,13 +41,10 @@ public class Maze
         }
         else
         {
-            Console.WriteLine("Can't go that way!");
+            throw new InvalidOperationException("Can't go that way!");
         }
     }
 
-    /// <summary>
-    /// Problem 4: Move Down
-    /// </summary>
     public void MoveDown()
     {
         if (_mazeMap.TryGetValue((_currX, _currY), out var status) && status[3])
@@ -67,7 +53,7 @@ public class Maze
         }
         else
         {
-            Console.WriteLine("Can't go that way!");
+            throw new InvalidOperationException("Can't go that way!");
         }
     }
 
