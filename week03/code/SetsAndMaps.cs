@@ -1,7 +1,5 @@
 using System.Text.Json;
 
-namespace week03;
-
 public static class SetsAndMaps
 {
     /// <summary>
@@ -114,21 +112,4 @@ public static class SetsAndMaps
 
         return summary.ToArray();
     }
-}
-
-// Clases auxiliares para la deserialización JSON (Problema 5)
-public class FeatureCollection
-{
-    public List<Feature> Features { get; set; } = new();
-}
-
-public class Feature
-{
-    public Properties Properties { get; set; } = new();
-}
-
-public class Properties
-{
-    public string Place { get; set; } = "";
-    public double Mag { get; set; }
 }
