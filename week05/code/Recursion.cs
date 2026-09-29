@@ -1,4 +1,5 @@
-using System.Collections;
+using System;
+using System.Collections.Generic;
 
 public static class Recursion
 {
@@ -14,8 +15,11 @@ public static class Recursion
     /// </summary>
     public static int SumSquaresRecursive(int n)
     {
-        // TODO Start Problem 1
-        return 0;
+        // base case
+        if (n <= 0)
+            return 0;
+
+        return (n * n) + SumSquaresRecursive(n - 1);
     }
 
     /// <summary>
@@ -39,7 +43,20 @@ public static class Recursion
     /// </summary>
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
-        // TODO Start Problem 2
+        if (word.Length == size)
+        {
+            results.Add(word);
+            return;
+        }
+
+        foreach (char c in letters)
+        {
+            // check if char is already in word
+            if (!word.Contains(c))
+            {
+                PermutationsChoose(results, letters, size, word + c);
+            }
+        }
     }
 
     /// <summary>
@@ -86,20 +103,27 @@ public static class Recursion
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
-        // Base Cases
-        if (s == 0)
-            return 0;
-        if (s == 1)
-            return 1;
-        if (s == 2)
-            return 2;
-        if (s == 3)
-            return 4;
+        // init dict if null
+        remember ??= new Dictionary<int, decimal>();
 
-        // TODO Start Problem 3
+        // base cases
+        if (s <= 0) return 0;
+        if (s == 1) return 1;
+        if (s == 2) return 2;
+        if (s == 3) return 4;
 
-        // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        // check memo
+        if (remember.ContainsKey(s))
+        {
+            return remember[s];
+        }
+
+        // recursive call with memoization
+        decimal ways = CountWaysToClimb(s - 1, remember) + 
+                       CountWaysToClimb(s - 2, remember) + 
+                       CountWaysToClimb(s - 3, remember);
+
+        remember[s] = ways;
         return ways;
     }
 
@@ -118,7 +142,21 @@ public static class Recursion
     /// </summary>
     public static void WildcardBinary(string pattern, List<string> results)
     {
-        // TODO Start Problem 4
+        int index = pattern.IndexOf('*');
+
+        // no wildcards left
+        if (index == -1)
+        {
+            results.Add(pattern);
+            return;
+        }
+
+        // replace wildcard with 0 and 1
+        string prefix = pattern[..index];
+        string suffix = pattern[(index + 1)..];
+
+        WildcardBinary(prefix + "0" + suffix, results);
+        WildcardBinary(prefix + "1" + suffix, results);
     }
 
     /// <summary>
@@ -132,12 +170,31 @@ public static class Recursion
         if (currPath == null) {
             currPath = new List<ValueTuple<int, int>>();
         }
-        
-        // currPath.Add((1,2)); // Use this syntax to add to the current path
 
-        // TODO Start Problem 5
-        // ADD CODE HERE
+        currPath.Add((x, y));
 
-        // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
+        // check if we reached the end
+        if (maze.IsEnd(x, y))
+        {
+            results.Add(currPath.AsString());
+        }
+        else
+        {
+            // try moving in 4 directions
+            (int dx, int dy)[] directions = { (1, 0), (-1, 0), (0, 1), (0, -1) };
+
+            foreach (var (dx, dy) in directions)
+            {
+                int newX = x + dx;
+                int newY = y + dy;
+
+                if (maze.IsValidMove(currPath, newX, newY))
+                {
+                    // send a copy of currPath so branches don't collide
+                    List<ValueTuple<int, int>> newPath = new(currPath);
+                    SolveMaze(results, maze, newX, newY, newPath);
+                }
+            }
+        }
     }
 }
