@@ -1,45 +1,28 @@
-public class Node
+public void Insert(int value)
 {
-    public int Data { get; set; }
-    public Node? Right { get; private set; }
-    public Node? Left { get; private set; }
-
-    public Node(int data)
+    if (value < Value)
     {
-        this.Data = data;
-    }
-
-    public void Insert(int value)
-    {
-        // TODO Start Problem 1
-
-        if (value < Data)
+        // Insertar en el subárbol izquierdo
+        if (Left is null)
         {
-            // Insert to the left
-            if (Left is null)
-                Left = new Node(value);
-            else
-                Left.Insert(value);
+            Left = new Node(value);
         }
         else
         {
-            // Insert to the right
-            if (Right is null)
-                Right = new Node(value);
-            else
-                Right.Insert(value);
+            Left.Insert(value);
         }
     }
-
-    public bool Contains(int value)
+    else if (value > Value)
     {
-        // TODO Start Problem 2
-        return false;
+        // Insertar en el subárbol derecho
+        if (Right is null)
+        {
+            Right = new Node(value);
+        }
+        else
+        {
+            Right.Insert(value);
+        }
     }
-
-    public int GetHeight()
-    {
-        // TODO Start Problem 4
-        return 0; // Replace this line with the correct return statement(s)
-    }
+    // Si value == Value, no se hace nada para evitar duplicados.
 }
